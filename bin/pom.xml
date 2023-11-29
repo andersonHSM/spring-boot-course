@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.andersonhsm</groupId>
-	<artifactId>spring-boot-course-from-erudio</artifactId>
+	<artifactId>springcourse</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>springcourse</name>
 	<description>Demo project for Spring Boot</description>
