@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  spring-boot-section-6:
+    image: spring-boot
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    restart: always
+    volumes:
+      - .:/usr/src/mymaven
+
+  mysql-db:
+    container_name: mysql-db
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    volumes:
+      - "/Users/andersonhenrique/Projects/docker-volumes/jdbc-course/mysql:/var/lib/mysql"
+    restart: always
+    environment:
+      MYSQL_USER: developer
+      MYSQL_ROOT_PASSWORD: 1234567
+      MYSQL_PASSWORD: 1234567
+
+  phpmyadmin:
+      depends_on:
+        - mysql-db
+      image: phpmyadmin:latest
+      restart: always
+      ports:
+        - "8090:80"
+      environment:
+        PMA_HOST: mysql-db
+        PMA_PORT: 3306
+        PMA_ARBITRARY: 1
