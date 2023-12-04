@@ -19,7 +19,7 @@ services:
       - "3306:3306"
       - "33060:33060"
     volumes:
-      - "/Users/andersonhenrique/Projects/docker-volumes/jdbc-course/mysql:/var/lib/mysql"
+      - "${MYSQL_VOLUME}:/var/lib/mysql"
     restart: always
     environment:
       MYSQL_USER: developer
