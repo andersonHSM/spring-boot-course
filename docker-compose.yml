@@ -11,6 +11,10 @@ services:
     restart: always
     volumes:
       - .:/usr/src/mymaven
+      - maven-repo:/root/.m2
+    depends_on:
+      - mysql-db
+    # command: mvn spring-boot:run 
 
   mysql-db:
     container_name: mysql-db
@@ -37,3 +41,6 @@ services:
         PMA_HOST: mysql-db
         PMA_PORT: 3306
         PMA_ARBITRARY: 1
+
+volumes:
+  maven-repo:
