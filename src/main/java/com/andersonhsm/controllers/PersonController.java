@@ -4,21 +4,20 @@ import com.andersonhsm.model.Person;
 import com.andersonhsm.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/person")
 public class PersonController {
 
-
     @Autowired
     private PersonService service;
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findById(@PathVariable(name = "id", required = true) String id) {
+    public Person findById(@PathVariable(name = "id", required = true) Long id) {
         return service.findById(id);
     }
 
@@ -27,23 +26,22 @@ public class PersonController {
         return service.findAll();
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Person create(@RequestBody Person person) {
         return service.create(person);
     }
 
-    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person update(@RequestBody Person person) {
+    @PatchMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Person update(@RequestBody Person person, @PathVariable(name = "id", required = true) Long id) {
+        person.setId(id);
         return service.update(person);
     }
 
-
     @DeleteMapping(path = "/{id}")
-    public void delete(@PathVariable(value = "id") String id) {
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         service.delete(id);
-    }
 
+        return ResponseEntity.noContent().build();
+    }
 
 }

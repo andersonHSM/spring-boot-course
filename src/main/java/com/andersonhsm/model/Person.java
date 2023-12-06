@@ -3,6 +3,8 @@ package com.andersonhsm.model;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
+@DynamicUpdate
 @Table(name = "person")
 public class Person implements Serializable {
     @Id
@@ -91,4 +94,12 @@ public class Person implements Serializable {
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, address, gender);
     }
+
+    @Override
+    public String toString() {
+        return "Person [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", address=" + address
+                + ", gender=" + gender + "]";
+    }
+
+    
 }
