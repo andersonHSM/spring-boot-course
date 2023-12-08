@@ -7,8 +7,10 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.andersonhsm.data.dto.v1.PersonDTO;
 import com.andersonhsm.exceptions.ResourceNotFoundException;
-import com.andersonhsm.model.Person;
+import com.andersonhsm.mapper.Mapper;
+import com.andersonhsm.model.entities.Person;
 import com.andersonhsm.repositories.PersonRepository;
 
 @Service
@@ -19,38 +21,47 @@ public class PersonService {
     @Autowired
     PersonRepository personRepository;
 
-    public Person findById(Long id) {
+    public PersonDTO findById(Long id) {
         logger.info("[findById] Searching one person");
 
-        return personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No record found."));
+        Person entity = personRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No resource found"));
+
+        return Mapper.parseObject(entity, PersonDTO.class);
     }
 
-    public List<Person> findAll() {
-        return personRepository.findAll();
+    public List<PersonDTO> findAll() {
+        return Mapper.parseListObjects(personRepository.findAll(), PersonDTO.class);
     }
 
-    public Person create(Person person) {
+    public PersonDTO create(PersonDTO person) {
+        Person entityToCreate = Mapper.parseObject(person, Person.class);
 
-        return personRepository.save(person);
+        Person entityCreated = personRepository.save(entityToCreate);
+
+        return Mapper.parseObject(entityCreated, PersonDTO.class);
     }
 
-    public Person update(Person person) {
+    public PersonDTO update(PersonDTO person) {
 
         logger.info("Updating one person!");
         Person personEntity = personRepository.findById(person.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("No record found."));
+                .orElseThrow(() -> new ResourceNotFoundException("No resource found"));
 
         Optional.ofNullable(person).map(i -> i.getFirstName()).ifPresent(i -> personEntity.setFirstName(i));
         Optional.ofNullable(person).map(i -> i.getLastName()).ifPresent(i -> personEntity.setLastName(i));
         Optional.ofNullable(person).map(i -> i.getAddress()).ifPresent(i -> personEntity.setAddress(i));
         Optional.ofNullable(person).map(i -> i.getGender()).ifPresent(i -> personEntity.setGender(i));
 
-        return personRepository.save(personEntity);
+        Person entityUpdated = personRepository.save(personEntity);
+
+        return Mapper.parseObject(entityUpdated, PersonDTO.class);
     }
 
     public void delete(Long id) {
 
-        Person entity = findById(id);
+        Person entity = personRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No resource found"));
 
         personRepository.delete(entity);
     }

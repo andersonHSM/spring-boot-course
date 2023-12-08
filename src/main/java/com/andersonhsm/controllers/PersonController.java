@@ -1,6 +1,6 @@
 package com.andersonhsm.controllers;
 
-import com.andersonhsm.model.Person;
+import com.andersonhsm.data.dto.v1.PersonDTO;
 import com.andersonhsm.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,22 +17,22 @@ public class PersonController {
     private PersonService service;
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person findById(@PathVariable(name = "id", required = true) Long id) {
+    public PersonDTO findById(@PathVariable(name = "id", required = true) Long id) {
         return service.findById(id);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Person> findAll() {
+    public List<PersonDTO> findAll() {
         return service.findAll();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person create(@RequestBody Person person) {
+    public PersonDTO create(@RequestBody PersonDTO person) {
         return service.create(person);
     }
 
     @PatchMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person update(@RequestBody Person person, @PathVariable(name = "id", required = true) Long id) {
+    public PersonDTO update(@RequestBody PersonDTO person, @PathVariable(name = "id", required = true) Long id) {
         person.setId(id);
         return service.update(person);
     }

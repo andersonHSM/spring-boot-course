@@ -1,4 +1,4 @@
-package com.andersonhsm.model;
+package com.andersonhsm.model.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -101,5 +101,4 @@ public class Person implements Serializable {
                 + ", gender=" + gender + "]";
     }
 
-    
 }

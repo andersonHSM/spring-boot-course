@@ -1,8 +1,9 @@
 version: "3.8"
 
 services:
-  spring-boot-section-6:
+  spring-boot:
     image: spring-boot
+    container_name: spring-boot-app
     build:
       context: .
     ports:
@@ -31,16 +32,16 @@ services:
       MYSQL_PASSWORD: 1234567
 
   phpmyadmin:
-      depends_on:
-        - mysql-db
-      image: phpmyadmin:latest
-      restart: always
-      ports:
-        - "8090:80"
-      environment:
-        PMA_HOST: mysql-db
-        PMA_PORT: 3306
-        PMA_ARBITRARY: 1
+    depends_on:
+      - mysql-db
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - "8090:80"
+    environment:
+      PMA_HOST: mysql-db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
 
 volumes:
   maven-repo:
